@@ -1,0 +1,97 @@
+% Do not modify the next 9 lines
+% ------------------------------
+\documentclass[11pt]{article}
+\usepackage{amssymb,amsmath,url}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{float}
+\topmargin -0.5in
+\footskip 0.7in
+\textwidth 6.5in
+\textheight 9.0in
+\oddsidemargin 0.1in
+\evensidemargin 0.1in
+\parindent0pt\parskip1ex
+% ------------------------------
+\begin{document}
+
+% 1. Title and author of the report.
+
+\noindent
+\begin{minipage}{1.0\linewidth}
+  {\Large \bf  
+    LLVM: Code generation and Autovectorization
+  }\\[-1.5mm]
+  \noindent\rule{\linewidth}{1pt}\\[-2pt] 
+  {\small \bf ACCG-16 \hfill
+    Simon Gr\"atzer
+  }
+\end{minipage}
+
+
+\section*{Introduction}
+
+\input{chapters/basics}
+\input{chapters/autovec}
+\input{chapters/code_generation}
+
+\section*{Conclusion}
+
+LLVM has a powerful code generaton framework, which includes target independent
+algorithms to help developers write a compiler backend. Simply by providing the framework with
+the correct configuration about the target machine, the opcodes can be transformed into 
+legal operations supported by the target machine. 
+LLVM's IR allows compiler frontends to avoid having to deal with target specific constraints.
+
+Auto Vectorization promises speedups for a lot of multimedia computations. The programmer only needs to 
+bring it's code (especially loops) into a form, which the vectorizers can convert into SIMD instructions.
+The LLVM IR has native support for vector instructions, the vectorizers work on the control flow graph
+of the program to vectoriize the code. 
+The compiler frontend doesn't need to support vector types on it's own. As as it provides the necessary hints
+to the LLVM compiler it can optimize many loops.
+
+% DEADLINE: 5pm, 20.07.2016
+% Export as a pdf file (e.g., pdflatex template.tex)
+
+
+% % Page limits 
+% -------------
+%
+% Relative to the pdf file
+% including figures, tables, algorithms and such, 
+% but NOT including reference and appendices.
+% Appendices can contain extra plots, figures, code snippets, ...
+%
+% Single author
+% Length: 7-10 pages
+%
+
+% 2. Put your text here. 
+
+\nocite{*} 
+\bibliographystyle{apalike}
+\bibliography{report}
+
+%\begin{thebibliography}{99}
+%
+%\bibitem{BLAS1}
+%C.~L. Lawson, R.~J. Hanson, R.~J. Kincaid, and F.~T. Krogh.
+%{\sl Basic linear algebra subprograms for {F}ortran usage}.
+%ACM Transactions on Mathematical Software, 5 (1979), pp.~308--323.
+%
+%\bibitem{BLAS2}
+%J.~J. Dongarra, J.~D. Croz, S.~Hammarling, and R.~J. Hanson.
+%{\sl An extended set of {F}ortran basic linear algebra subprograms}.
+%ACM Transactions on Mathematical Software, 14 (1988), pp.~1--17.
+%
+%\bibitem{BLAS3}
+%J.~Dongarra, J.~D. Croz, I.~Duff, and S.~Hammarling.
+%{\sl A set of {L}evel 3 {B}asic {L}inear {A}lgebra {S}ubprograms}.
+%ACM Transactions on Mathematical Software, 16 (1990), pp.~1--17.
+%
+%\end{thebibliography}
+
+\end{document}

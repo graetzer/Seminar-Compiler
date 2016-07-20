@@ -1,0 +1,47 @@
+\section{Basics}
+\subsection{LLVM Project}
+
+The LLVM Project~\cite{LLVM:CGO04} is a collection of components which can be used to build compilers and related tools
+for various programming languages and target platforms.
+In this report we will have a look at how the LLVM code generation process works for most target architectures
+and how LLVM can optimize code to take advantage of SIMD intruction sets.
+
+LLVM began as a research project at the University of Illinois, with the goal of building a fast and modular compiler.
+The idea is to have a set of modular compiler components to reduce the time and cost of building compilers
+particular use cases. By having components compilers can share them and profit from advances in every component.
+The LLVM includes (among others) the following technologies:
+\begin{itemize}
+    \item A number of compiler frontends
+    \item Various optimizers
+    \item Code Generation Framework
+    \item An advanced debugger (LLDB)
+    \item An symbolic execution engine (KLEE)
+\end{itemize}
+
+\subsection{LLVM Intermediate Representation}
+\label{subsec:llvm_ir}
+
+Every compiler frontend of LLVM translates the source code into LLVM's intermediate representation (IR).
+The LLVM IR is essentially an high level assembly language, which can be used as basis for optimization,
+vectorization, code generation, static analysis, symbolic execution, and much more.
+The IR is used to represent the program logic in memory as well as on the disk. All compiler transformations
+take place on the IR or start with the IR. The advantage of the LLVM IR compared to bitcode of other platforms
+(e.g the Java VM's bitcode) is that it is human readable. For example the code in~\ref{lst:llvm_ir} implements
+the function $f(aa, bb, cc) = (aa + bb) / cc$ fo signed 32 bit integers. The LLVM IR code is still easily
+readable for someone who is at least familiar with C and some assembly code. 
+\label{lst:llvm_ir}
+\begin{lstlisting}[language=LLVM,gobble=4]
+define i32 @foo(i32 %aa, i32 %bb, i32 %cc) {
+    entry:
+    %add = add nsw i32 %aa, %bb
+    %div = sdiv i32 %add, %cc
+    ret i32 %div
+}
+\end{lstlisting}
+
+The IR was designed to be light-weight and low-level, while style being very expressive (as opposed to actual assembly code).
+It's possible to map high level language constructs cleanly into the IR code, but still having type information available.
+This is important for optimization and code generation. Every code generator can use the type information to cleanly transform
+the IR into valid machine code, optimizers can use the IR to perform target independent optimizations.
+Additionally the IR natively supports vector types. We will discuss the topics of vectorization~\ref{sec:autovec} 
+and code generation~\ref{sec:codegen} in the next sections.
